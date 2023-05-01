@@ -2,20 +2,34 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;  //symfony is a set of libraries that gives us tons of tools
                                                 //for logging, making database queries, sending emails, rendering templates, making API calls etc.
                                                 //~100 separate libraries
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\String\u;
 
-class VinylController //controller or action
+class VinylController extends AbstractController//controller or action
 {
+
     #[Route('/')]   //php attribute
                     // linked to controller below
                     // points to a link
     public function homepage(): Response //controller return type
     {
-        return new Response('Title: Pb and Jams'); //controllers must return Response objects (might be worked around)
+        $tracks = [
+            ['song' => 'Gangsta\'s Paradise', 'artist' => 'Coolio'],
+            ['song' => 'Waterfalls', 'artist' => 'TLC'],
+            ['song' => 'Creep', 'artist' => 'Radiohead'],
+            ['song' => 'Kiss from a Rose', 'artist' => 'Seal'],
+            ['song' => 'On Bended Knee', 'artist' => 'Boyz II Men'],
+            ['song' => 'Fantasy', 'artist' => 'Mariah Carey'],
+        ];
+        return $this->render('Vinyl/Homepage.html.twig', [
+            'title' => 'PB & Jams',
+            'tracks' => $tracks,
+        ]);
+//        return new Response('Title: Pb and Jams'); //controllers must return Response objects (might be worked around)
     }
     #[Route('/browse/{slug}')]  //wild card {wildcard}
                                 //each wild card is matched to a controller by name not by position
