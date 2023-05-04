@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 class VinylController extends AbstractController//controller or action
 {
 
-    #[Route('/')]   //php attribute
+    #[Route('/', name: 'app_homepage')]   //php attribute
                     // linked to controller below
                     // points to a link
     public function homepage(): Response //controller return type
@@ -25,13 +25,16 @@ class VinylController extends AbstractController//controller or action
             ['song' => 'On Bended Knee', 'artist' => 'Boyz II Men'],
             ['song' => 'Fantasy', 'artist' => 'Mariah Carey'],
         ];
-        return $this->render('Vinyl/Homepage.html.twig', [
+
+//        dd($tracks); dump die
+
+        return $this->render('Vinyl/homepage.html.twig', [
             'title' => 'PB & Jams',
             'tracks' => $tracks,
         ]);
 //        return new Response('Title: Pb and Jams'); //controllers must return Response objects (might be worked around)
     }
-    #[Route('/browse/{slug}')]  //wild card {wildcard}
+    #[Route('/browse/{slug}', name: 'app_browse')]  //wild card {wildcard}
                                 //each wild card is matched to a controller by name not by position
                                 //can be anything
                                 //when inserted we are allowed to have a function attribute of a same name $slug
@@ -40,15 +43,18 @@ class VinylController extends AbstractController//controller or action
     public function browse(string $slug = null): Response   //null make /browse page work
                                                             //you can have argument with name $slug but is not required
     {
-        if($slug)
-        {
-            $title = 'Genre: ' .u(str_replace('-', ' ', $slug))->title(true); //u() is a symfony function
-            //from symfony/string library/component
-        }
-        else {
-            $title = 'All genres';
-        }
+//        if($slug)
+//        {
+//            $title = 'Genre: ' .u(str_replace('-', ' ', $slug))->title(true); //u() is a symfony function
+//            //from symfony/string library/component
+//        }
+//        else {
+//            $title = 'All genres';
+//        }
+        $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
 
-        return new Response($title);
+        return $this->render('Vinyl/browse.html.twig', [
+            'genre' => $genre,
+        ]);
     }
 }
