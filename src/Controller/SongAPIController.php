@@ -20,6 +20,9 @@ class SongAPIController extends AbstractController
             'url' => 'https://symfonycasts.s3.amazonaws.com/sample.mp3',
         ];
 
+        $logger->info('Returning API response for song {song}', [
+            'song' => $id,
+        ]);
         return new JsonResponse($song);
     }
 }

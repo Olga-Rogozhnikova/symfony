@@ -7,15 +7,16 @@ use Symfony\Component\HttpFoundation\Response;  //symfony is a set of libraries 
                                                 //for logging, making database queries, sending emails, rendering templates, making API calls etc.
                                                 //~100 separate libraries
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 use function Symfony\Component\String\u;
 
-class VinylController extends AbstractController//controller or action
+class VinylController extends AbstractController //controller or action
 {
 
     #[Route('/', name: 'app_homepage')]   //php attribute
                     // linked to controller below
                     // points to a link
-    public function homepage(): Response //controller return type
+    public function homepage(Environment $twig): Response //controller return type
     {
         $tracks = [
             ['song' => 'Gangsta\'s Paradise', 'artist' => 'Coolio'],
@@ -28,11 +29,14 @@ class VinylController extends AbstractController//controller or action
 
 //        dd($tracks); dump die
 
-        return $this->render('Vinyl/homepage.html.twig', [
+        $html = $twig->render('Vinyl/homepage.html.twig', [
             'title' => 'PB & Jams',
             'tracks' => $tracks,
         ]);
-//        return new Response('Title: Pb and Jams'); //controllers must return Response objects (might be worked around)
+        return new Response($html);
+
+
+        //        return new Response('Title: Pb and Jams'); //controllers must return Response objects (might be worked around)
     }
     #[Route('/browse/{slug}', name: 'app_browse')]  //wild card {wildcard}
                                 //each wild card is matched to a controller by name not by position
